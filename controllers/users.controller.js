@@ -1,11 +1,54 @@
-const express = require("express");
-const router = express.Router();
-const moment = require("moment");
+const bcrypt = require("bcrypt");
 const { User } = require("../models/dataModel");
+const moment = require("moment");
 
-const { checkId } = require("../middleware/validation");
+const userSignup = async (req, res) => {
+  const { email, password } = req.body;
 
-router.get("/api/user/:id/history", checkId, async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ email, password: hashedPassword });
+
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const userSignIn = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(403)
+        .json({ error: "username is wrong or does not exist." });
+    }
+
+    const passwordCheck = await bcrypt.compare(password, user.password);
+
+    if (!passwordCheck) {
+      return res.status(403).json({ error: "Password is wrong , try again" });
+    }
+
+    res.json({ message: "Login successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).res.json({ error: error.message });
+  }
+};
+
+const orderHistory = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id).populate("orders");
@@ -18,9 +61,9 @@ router.get("/api/user/:id/history", checkId, async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+};
 
-router.get("/api/user/status/:id", checkId, async (req, res) => {
+const orderStatus = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id).populate({
@@ -87,6 +130,11 @@ router.get("/api/user/status/:id", checkId, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  userSignup,
+  userSignIn,
+  orderHistory,
+  orderStatus
+};

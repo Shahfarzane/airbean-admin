@@ -5,8 +5,6 @@ RESTful API for AirBean application. It provides endpoints to create users,check
 ## Developers
 
 - [Shahin](https://www.github.com/shahfarzane)
-- [Freija](https://www.github.com/FreijaL)
-- [Linda](https://www.github.com/lindakahju)
 
 ## Installation
 

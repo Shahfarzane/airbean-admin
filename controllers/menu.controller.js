@@ -1,8 +1,6 @@
-const express = require("express");
-const router = express.Router();
 const { Menu } = require("../models/dataModel");
 
-router.get("/api/beans", async (req, res) => {
+const getMenu = async (req, res) => {
   try {
     let menu = await Menu.find();
     if (menu.length === 0) {
@@ -12,10 +10,10 @@ router.get("/api/beans", async (req, res) => {
 
     res.json({ menu });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Menu items not found , check your connection." });
+    res.status(500).json({ error: error.message });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  getMenu
+};
