@@ -5,15 +5,12 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// const menuRoute = require("./routes/menuRoute.js");
-// const userAuthenticationRoute = require("./routes/userAuthenticationRoute.js");
-// const orderRoute = require("./routes/ordersRoute.js");
-// const userHistoryRoute = require("./routes/userHistoryRoute.js");
-// const adminRoute = require("./routes/adminRoute.js");
-// const adminAuth = require("./routes/adminAuthentication.js");
-
+const menuRoutes = require("./routes/menu.route");
 const adminRoutes = require("./routes/admin.route");
-app.use(adminRoutes);
+const userRoutes = require("./routes/users.route");
+const orderRoutes = require("./routes/order.route");
+
+app.use(adminRoutes, menuRoutes, userRoutes, orderRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -26,7 +26,7 @@ const signUp = async (req, res) => {
     res.json({ message: "Admin successfully created", token });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -37,12 +37,12 @@ const login = async (req, res) => {
     const admin = await User.findOne({ email });
 
     if (!admin || admin.role !== "admin") {
-      return res.status(401).json({ error: "Access Denied! " });
+      return res.status(403).json({ error: "Access Denied! " });
     }
 
     const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Check your password" });
+      return res.status(403).json({ error: "Check your password" });
     }
 
     const token = createToken(admin._id, admin.role);
@@ -50,7 +50,7 @@ const login = async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -68,7 +68,7 @@ const create = async (req, res) => {
     res.json(newMenuItem);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -107,7 +107,7 @@ const createPromotion = async (req, res) => {
     res.json({ message: "Promotion menu created successfully", promotionMenu });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -132,7 +132,7 @@ const update = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -150,7 +150,7 @@ const remove = async (req, res) => {
     return res.json({ message: "Product deleted successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Failed to delete product" });
+    return res.status(500).json({ error: error.message });
   }
 };
 module.exports = {
