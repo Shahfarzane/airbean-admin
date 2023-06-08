@@ -1,6 +1,6 @@
 {
-  "name": "airbean-api",
-  "version": "1.0.0",
+  "name": "AirBean-api",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Shahin Farzane",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",

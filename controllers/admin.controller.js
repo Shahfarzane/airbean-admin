@@ -134,6 +134,7 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id } = req.params;
+
   try {
     const product = await Menu.findById(id);
 
