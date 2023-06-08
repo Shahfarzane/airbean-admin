@@ -17,7 +17,7 @@ const createOrder = async (req, res) => {
     const drinks = cart.map((item) => item.id);
     const menu = await Menu.find({ _id: { $in: drinks } });
     if (menu.length !== drinks.length) {
-      return res.status(400).json({
+      return res.status(404).json({
         error: "Coffee not found / You can only order from items in the menu!"
       });
     }
@@ -58,7 +58,7 @@ const createOrder = async (req, res) => {
         email
       },
 
-      "Order Details": { order, orderTotal: totalPrice }
+      Details: { order, orderTotal: totalPrice }
     };
     res.json({
       orderInfo
