@@ -47,7 +47,7 @@ const login = async (req, res) => {
 
     const token = createToken(admin._id, admin.role);
 
-    res.json({ token });
+    res.json({ message: "succuss", token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -79,13 +79,9 @@ const createPromotion = async (req, res) => {
     const menuItems = await Menu.find({ name: { $in: promotionItems } });
 
     if (menuItems.length !== promotionItems.length) {
-      const missingProducts = promotionItems.filter(
-        (product) =>
-          !menuItems.some((menuProduct) => menuProduct.name === product)
-      );
       return res
         .status(400)
-        .json({ error: `Invalid products: ${missingProducts}` });
+        .json({ error: "This item doesn't exist in the menu" });
     }
 
     const promotionMenu = new Menu({
