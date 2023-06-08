@@ -98,7 +98,7 @@ const orderStatus = async (req, res) => {
 
         const message =
           status === "delivered"
-            ? "You order has been delivered successfully"
+            ? "You order has been delivered successfully."
             : `Your order will be delivered in ${remainingTime} minutes`;
 
         const totalPrice = order.cart.reduce(
